@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Grades CRUD App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #0d3713;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: #f1f1f1;
+}
+
+/* Main content */
+.main {
+  margin-left: 200px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+   background-color: #0d3713;
+  color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+
+/* Some media queries for responsiveness */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+</style>
+</head>
+<body>
+
+   <div class="sidenav">
+      <a href="./dashboard">Dashboard</a>
+      <a href="./ratings">Ratings</a>
+      <button class="dropdown-btn">Users
+          <i class="fa fa-caret-down"></i>
+       </button>
+       <div class="dropdown-container">
+          <a href="./users">All Users</a>
+          <a href="./user_new">Add New</a>
+       </div>
+    <button class="dropdown-btn">Master Data
+          <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+       <a href="./grades">Grades</a>
+       <a href="./subjects">Subjects</a>
+    </div>
+      <a href="./logout">Logout</a>
+    </div>
+
+
+<div class="main">
+   <section class="section dashboard">
+      <div class="row">
+         <h2>Grades List</h2>
+         <form method="POST" action="/add_grades">
+            <input type="text" name="name" required>
+            <button type="submit">Add Grades</button>
+         </form>
+
+         <table class="table datatable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Grades</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+               {% for grade in grades %}
+                 <tr>
+                     <td>{{ grade.id }}</td>
+                     <td>{{ grade.name }}</td>
+                     <td>
+                         <a href="{{ url_for('delete_grade', id=grade.id) }}">Delete</a>
+                     </td>
+                 </tr>
+             {% endfor %}
+             </tbody>
+      </div>
+  </section>
+</div>
+   
+<script>
+   /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+   var dropdown = document.getElementsByClassName("dropdown-btn");
+   var i;
+   
+   for (i = 0; i < dropdown.length; i++) {
+     dropdown[i].addEventListener("click", function() {
+       this.classList.toggle("active");
+       var dropdownContent = this.nextElementSibling;
+       if (dropdownContent.style.display === "block") {
+         dropdownContent.style.display = "none";
+       } else {
+         dropdownContent.style.display = "block";
+       }
+     });
+   }
+   </script>
+
+
+</body>
+</html> 
